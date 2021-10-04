@@ -1,0 +1,90 @@
+<%-- any content can be specified here e.g.: --%>
+<%@ page pageEncoding="UTF-8" %>
+<%@page import="java.util.ArrayList" %>
+<title>Felippe Pedro Teixeira Silva</title>
+<%
+   String sorte = "";
+    if (application.getAttribute("usuario") == null) {
+        application.setAttribute("usuario", new ArrayList<String>());
+    }
+    //contator de sessões
+    if (application.getAttribute("counter") == null) {
+        application.setAttribute("counter", 0);
+    }
+    if (request.getParameter("session-login") != null) {
+        session.setAttribute("session-name", request.getParameter("session-name"));
+        response.sendRedirect(request.getRequestURI());
+        
+          //MEGA SENA
+         
+        int[] numeros = new int[6];
+            
+
+            for (int i = 0; i < 6; i++) {
+                int aleatorio = (int) (Math.random() * 60 + 1);
+
+                boolean usado = false;
+                for (int j = 0; j < i; j++) {
+                    if (numeros[j] == aleatorio) {
+                        i--;
+                        usado = true;
+                        break;
+                    }
+                }
+                if (!usado) {
+                    numeros[i] = aleatorio;
+                    if (i == 0) {
+                        sorte = sorte + "<div class = 'ball'>" + aleatorio + "</div>";
+                    } else {
+                        sorte = sorte  +  "<div class = 'ball'>" + aleatorio + "</div>";
+                    } 
+
+                }
+            }
+ session.setAttribute("sorte", sorte);
+
+        int counter = (int) application.getAttribute("counter") + 1;
+        application.setAttribute("counter", counter);
+        ArrayList<String> usuario = (ArrayList<String>) application.getAttribute("usuario");
+        usuario.add((String) session.getAttribute("session-name"));
+        application.setAttribute("usuario", usuario);
+        application.setAttribute("counter", counter);
+        
+      
+    } else if (request.getParameter("session-logout") != null) {
+        ArrayList<String> usuario = (ArrayList<String>) application.getAttribute("usuario");
+        int index = usuario.indexOf(session.getAttribute("session-name"));
+        usuario.remove(index);
+        application.setAttribute("usuario", usuario);
+        session.removeAttribute("session-name");
+        response.sendRedirect(request.getRequestURI());
+        // Remover sessões
+        int counter = (int) application.getAttribute("counter") - 1;
+        application.setAttribute("counter", counter);
+
+    }
+    String sessionName = (String) session.getAttribute("session-name");
+    String usuarios = "";
+    ArrayList<String> refuser = (ArrayList<String>) application.getAttribute("usuario");
+    for (int i = 0; i < refuser.size(); i++) {
+        usuarios = usuarios + "<div>" + refuser.get(i) + "</div>";
+    }
+%>
+<h1>Prova 1 - Programação Orientada a Objetos </h1>
+<form method ="post">
+    <a href="index.jsp"> Índice</a> |
+    <a href="Felippe.jsp"> Felippe</a> |
+    <a href="Felippe-dica-megasena.jsp"> Dica mega sena</a> |
+
+    <% if (sessionName == null) {%>
+    <input type="text" name="session-name" placeholder ="Entre com seu nome"/>
+    <input type="submit" name="session-login" value="Entrar"/>
+    <%} else {%>
+    Bem vindo, <%= sessionName%>
+    <input type="submit" name="session-logout" value="Sair"/>
+
+    <%}%>       
+    <div> Numero de usuários logados <%=application.getAttribute("counter")%> </div>
+    <div> <%=usuarios%> </div>
+</form>
+<hr/>

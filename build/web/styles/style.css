@@ -1,0 +1,38 @@
+h1 {
+    font-family: 'Cutive';
+    font-size: 20px;
+}
+a {
+    font-family: 'Darker Grotesque';
+    font-size: 18px;
+    color: rgba(0,100,200,0.8);
+}
+.ball{
+    float:left;
+    position: relative;
+    margin-left: 3px;
+    background-color: rgba(0,0,0,0.15);
+    border-radius: 50%;
+    text-align: center;
+    width: 30px;
+    height: 30px;
+    line-height: 30px;
+}
+table {
+  font-family: 'Darker Grotesque';
+  border-collapse: collapse;
+  width: 100%;
+  margin-top: 30px;
+}
+
+th, td {
+  text-align: left;
+  padding: 8px;
+}
+
+tr:nth-child(even){background-color: #f2f2f2}
+
+th {
+  background-color: rgba(0,100,220,0.8);
+  color: white;
+}
